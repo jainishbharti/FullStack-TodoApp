@@ -46,6 +46,7 @@ public class TodoResource {
 	
 	@GET
 	@Path("/{id}")
+	@Secured
 	public Response getById(@PathParam("id") Integer id) {
 		return Response.status(Response.Status.OK).entity(todoService.getById(id)).build();
 	}

@@ -4,11 +4,13 @@ import java.util.Base64;
 
 import com.datagrokr.todo.entity.Credential;
 import com.datagrokr.todo.entity.User;
+import com.datagrokr.todo.service.TokenUtilService;
 import com.datagrokr.todo.service.UserService;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -18,9 +20,10 @@ import jakarta.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthResource {
 	
-	private final UserService userService = new UserService();
+	UserService userService = new UserService();
+	TokenUtilService tokenUtilService = new TokenUtilService();
 	
-	@GET
+	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(Credential credential) {
@@ -36,11 +39,13 @@ public class AuthResource {
 	}
 	
 	@GET
-	@Path("checkLogin")
+	@Path("/checkLogin")
 	public Response checkLogin(@HeaderParam("Authorization") String auth) {
+		String token = auth.substring(6);
+		User user = tokenUtilService.getUserFromToken(token);
 		if(auth!= null && isAuthenticated(auth)) {
 			return Response.status(Response.Status.ACCEPTED)
-					.entity("Authentication successfull")
+					.entity(user)
 					.build();
 		} else return Response
 				.status(Response.Status.UNAUTHORIZED)
@@ -54,13 +59,15 @@ public class AuthResource {
 		byte[] bytes = Base64.getDecoder().decode(authInfo);
 
 		String decodedString = new String(bytes);
-		
 		String[] details = decodedString.split(":");
 		String email = details[0];
 		String password = details[1];
 		User user = userService.isUserAuthenticated(email, password);
-		if(user != null) return true;
+		if(user != null) {
+			return true;
+		}
 		else return false;
+		
 	}
 
 }
