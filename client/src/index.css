@@ -32,7 +32,7 @@ code {
 
 .nav-link {
   font-size: 1rem;
-  font-weight: 50;
+  font-weight: 550;
   margin: 0 5px;
   text-decoration: none;
   color: rgb(35, 36, 37);
@@ -40,7 +40,7 @@ code {
 
 .logo-link {
   font-size: 1.5rem;
-  font-weight: 50;
+  font-weight: 550;
   margin: 0 5px;
   text-decoration: none;
   color: rgb(19, 20, 20);
@@ -56,6 +56,16 @@ code {
 
 .err-msg {
   color: red;
+  width: 300px;
+  font-weight: 550;
+  margin-bottom: 1rem;
+}
+
+.success-msg{
+  color: green;
+  width: 300px;
+
+  margin-bottom: 1rem;
 }
 
 .registration-link {
@@ -89,4 +99,5 @@ code {
 .link {
   color: rgb(33, 33, 33);
   text-decoration: none;
+  font-weight: 550;
 }

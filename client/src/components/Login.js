@@ -40,15 +40,10 @@ const Login = () => {
           }
           try {
             const { status, data } = await axios.post(
-              "http://localhost:8080/todo/api/auth/login", 
+              "/auth/login/", 
               formData, {
-              crossDomain: true,
-              mode : 'CORS',
               headers: {
                   "Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "*",
-                  "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
-                  "Access-Control-Allow-Headers": "Origin, Content-Type"
                 }
             });
             if (status === 200) {
@@ -71,7 +66,7 @@ const Login = () => {
               name="email"
               label="Email"
               variant="outlined"
-              sx={{ label: { color: "#fff" }, width: 300 }}
+              sx={{ label: { color: "black" }, width: 300, marginBottom: '1rem' }}
             />
             <ErrorMessage name="email" component="div" className="err-msg" />
             <Field
@@ -80,7 +75,7 @@ const Login = () => {
               name="password"
               label="Password"
               variant="outlined"
-              sx={{ label: { color: "#fff" }, width: 300 }}
+              sx={{ label: { color: "black" }, width: 300, marginBottom: '1rem' }}
             />
             <ErrorMessage name="password" component="div" className="err-msg" />
 
@@ -98,7 +93,7 @@ const Login = () => {
           </Form>
         )}
       </Formik>
-      <Typography align="center" sx={{ color: "#fff" }}>
+      <Typography align="center" sx={{ color: "black" }}>
         Don't have an account?{" "}
         <Link to="/register" className="link">
           Register here

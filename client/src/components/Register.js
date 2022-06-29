@@ -8,15 +8,15 @@ import { Link } from "react-router-dom";
 import { Typography } from "@mui/material";
 
 const validationSchema = Yup.object({
-  name: Yup.string().required(),
-  email: Yup.string().email("Invalid email format").required(),
+  name: Yup.string().required('Required'),
+  email: Yup.string().email("Invalid email format").required('Required'),
   password: Yup.string()
-    .required()
+    .required('Required')
     .min(8, "Password is too short - should be 8 chars minimum.")
     .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), ""], "Passwords must match")
-    .required("required"),
+    .required("Required"),
 });
 
 const initialValues = {
@@ -27,29 +27,32 @@ const initialValues = {
 };
 
 const Register = () => {
-  const [link, setLink] = useState("");
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
   return (
     <div>
       <h1 className="heading">Register Yourself</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           const { confirmPassword, ...rest } = values;
           try {
             const result = await axios({
               method: "POST",
-              url: "todo/api/users/register",
+              url: "/users/register",
               data: rest,
               headers: {
                 "Content-Type": "application/json",
               },
             });
 
-            if (result.status === 200) {
+            if (result.status === 201) {
+              setMessage("User created successfully!");
+              setError("");
               const user = await result.data;
-              if(user) console.log('User registered successfully!');
+              if (user) console.log("User created successfully!");
             }
           } catch (err) {
             console.log(err);
@@ -57,17 +60,23 @@ const Register = () => {
           }
 
           setSubmitting(false);
+          resetForm();
         }}
       >
         {({ isSubmitting }) => (
           <Form className="form">
+            {message !== "" ? <span className="success-msg"><strong>{message}</strong></span> : ""}
             <Field
               as={TextField}
               type="text"
               name="name"
               label="Name"
               variant="outlined"
-              sx={{ label: { color: "#fff" }, width: 300 }}
+              sx={{
+                label: { color: "black" },
+                width: 300,
+                marginBottom: "1rem",
+              }}
             />
             <ErrorMessage name="lastName" component="div" className="err-msg" />
             <Field
@@ -76,7 +85,11 @@ const Register = () => {
               name="email"
               label="Email"
               variant="outlined"
-              sx={{ label: { color: "#fff" }, width: 300 }}
+              sx={{
+                label: { color: "black" },
+                width: 300,
+                marginBottom: "1rem",
+              }}
             />
             <ErrorMessage name="email" component="div" className="err-msg" />
             <Field
@@ -85,7 +98,11 @@ const Register = () => {
               name="password"
               label="Password"
               variant="outlined"
-              sx={{ label: { color: "#fff" }, width: 300 }}
+              sx={{
+                label: { color: "black" },
+                width: 300,
+                marginBottom: "1rem",
+              }}
             />
             <ErrorMessage name="password" component="div" className="err-msg" />
 
@@ -95,7 +112,11 @@ const Register = () => {
               name="confirmPassword"
               label="Confirm Password"
               variant="outlined"
-              sx={{ label: { color: "#fff" }, width: 300 }}
+              sx={{
+                label: { color: "black" },
+                width: 300,
+                marginBottom: "1rem",
+              }}
             />
             <ErrorMessage
               name="confirmPassword"
@@ -113,15 +134,10 @@ const Register = () => {
             >
               Submit
             </Button>
-            {link && (
-              <a href={link} className="registration-link">
-                Confirm Registration
-              </a>
-            )}
           </Form>
         )}
       </Formik>
-      <Typography align="center" sx={{ color: "#fff" }}>
+      <Typography align="center" sx={{ color: "black" }}>
         Already have an account?{" "}
         <Link to="/login" className="link">
           Login here

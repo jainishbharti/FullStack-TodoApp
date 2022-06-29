@@ -7,17 +7,18 @@ import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { LOGOUT } from "../context/constants/ActionConstants";
-import axios from "axios";
 
 const Navbar = () => {
-  const {state, dispatch} = useContext(UserContext);
+  const { state, dispatch } = useContext(UserContext);
 
   const handleLogout = async () => {
-    await axios.post("/api/logout", { withCredentials: true });
-    localStorage.setItem("isLoggedIn", false);
+    localStorage.removeItem("user");
     dispatch({ type: LOGOUT });
   };
+
+
   const { isLoggedIn } = state;
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -26,16 +27,15 @@ const Navbar = () => {
       >
         <Toolbar>
           <Typography
-            variant="h6"
             component="div"
             sx={{
               flexGrow: 1,
               fontFamily: "Shadows Into Light",
-              fontWeight: "400",
+              fontWeight: "550",
             }}
           >
             <NavLink to="/" className="logo-link">
-              TODO
+              Add Todos Here
             </NavLink>
           </Typography>
 
@@ -54,15 +54,15 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Button color="inherit" className="nav-link">
-                {state.firstName}
+              <Button color="secondary" >
+               <span className="nav-link">Hello, {state.name.split(" ")[0]}</span>
               </Button>
               <Button
                 color="inherit"
                 onClick={() => handleLogout()}
                 className="nav-link"
               >
-                LOGOUT
+                <span className="nav-link">LOGOUT</span>
               </Button>
             </>
           )}

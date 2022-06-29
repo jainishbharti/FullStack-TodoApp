@@ -51,7 +51,7 @@ export const userReducer = (state = initialState, action) => {
     case IS_LOGGED:
       return {
         ...state,
-        name: action.payload,
+        name: action.payload.name,
         isLoggedIn: true,
       };
     default:

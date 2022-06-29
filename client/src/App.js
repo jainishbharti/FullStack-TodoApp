@@ -9,11 +9,11 @@ import RegistrationPage from "./pages/RegistrationPage";
 function App() {
   return (
     <div className="App">
-        {/* <Navbar /> */}
+        <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          {/* <Route path="/login" element={<LoginPage />} /> */}
-          {/* <Route path="/register" element={<RegistrationPage />} /> */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegistrationPage />} />
         </Routes>
     </div>
   );
