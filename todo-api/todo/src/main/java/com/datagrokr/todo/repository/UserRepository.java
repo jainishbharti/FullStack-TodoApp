@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.datagrokr.todo.entity.User;
@@ -95,10 +96,11 @@ public class UserRepository {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<User> query = cb.createQuery(User.class);
 		Root<User> root = query.from(User.class);
-		query.where(
-				cb.equal(root.get("email"), email),
-				cb.equal(root.get("password"), password)
-				);
+		
+		Predicate predicate1 = cb.equal(root.get("email"), email);
+		Predicate predicate2 = cb.equal(root.get("password"), password);
+		Predicate andPredicate = cb.and(predicate1, predicate2);
+		query.where(andPredicate);
 		TypedQuery<User> tq = entityManager.createQuery(query);
 		try {
 			User user = tq.getSingleResult();

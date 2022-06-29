@@ -22,11 +22,11 @@ public class TodoRepository {
 		this.entityManager = emf.createEntityManager();
 	}
 	
-	public Todo addTodo(Todo todo) {
+	public List<Todo> addTodo(Todo todo) {
 		entityManager.getTransaction().begin();
 		entityManager.persist(todo);
 		entityManager.getTransaction().commit();
-		return todo;
+		return getTodoByUserId(todo.getUser().getUserId());
 	}
 	
 	public List<Todo> getTodoByUserId(Integer userId){
@@ -58,24 +58,26 @@ public class TodoRepository {
 		return entityManager.find(Todo.class, id);
 	}
 	
-	public Todo updateTodo(Todo todo, Integer id) {
+	public List<Todo> updateTodo(Todo todo, Integer id) {
 		Todo todoToUpdate = entityManager.find(Todo.class, id);
 		entityManager.getTransaction().begin();
 		if(todoToUpdate != null) {
-			todoToUpdate.setTitle(todo.getTitle());
-			todoToUpdate.setDone(todo.isDone());
+			if(todo.getTitle() != null) todoToUpdate.setTitle(todo.getTitle());
+			if(todo.isDone()) todoToUpdate.setDone(todo.isDone());
 		}
 		entityManager.persist(todoToUpdate);
 		entityManager.getTransaction().commit();
-		return todoToUpdate;
+		return getTodoByUserId(todoToUpdate.getUser().getUserId());
 		
 	}
 	
-	public void deleteById(Integer id) {
+	public List<Todo> deleteById(Integer id) {
 		entityManager.getTransaction().begin();
+		Todo todo = entityManager.find(Todo.class, id);
 		Query query = entityManager.createQuery("DELETE FROM Todo WHERE id="+ id);
 		query.executeUpdate();
 		entityManager.getTransaction().commit();
+		return getTodoByUserId(todo.getUser().getUserId());
 	}
 	
 	public void close() {

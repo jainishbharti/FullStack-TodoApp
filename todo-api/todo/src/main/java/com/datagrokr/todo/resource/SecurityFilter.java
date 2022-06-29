@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
+import com.datagrokr.todo.annotation.Secured;
 import com.datagrokr.todo.service.UserService;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -13,6 +14,7 @@ import jakarta.ws.rs.ext.Provider;
 
 
 @Provider
+@Secured
 public class SecurityFilter implements ContainerRequestFilter{
 	
 	private final UserService userService = new UserService();

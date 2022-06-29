@@ -22,7 +22,7 @@ public class TodoService {
 		return todoRepo.getTodosList();
 	}
 	
-	public Todo save(Todo todo, User user) {
+	public List<Todo> save(Todo todo, User user) {
 		todo.setUser(user);
 		return todoRepo.addTodo(todo);
 	}
@@ -31,12 +31,16 @@ public class TodoService {
 		return todoRepo.getById(id);
 	}
 	
-	public Todo update(Todo todo, Integer id) {
+	public List<Todo> update(Todo todo, Integer id) {
 		return todoRepo.updateTodo(todo, id);
 	}
 	
-	public void deleteById(Integer id) {
-		todoRepo.deleteById(id);
+	public List<Todo> deleteById(Integer id) {
+		return todoRepo.deleteById(id);
+	}
+	
+	public void close() {
+		todoRepo.close();
 	}
 	
 	

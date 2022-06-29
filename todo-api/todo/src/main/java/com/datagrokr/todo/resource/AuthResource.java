@@ -27,15 +27,22 @@ public class AuthResource {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(Credential credential) {
+		User user = userService.isUserAuthenticated(credential.getEmail(), credential.getPassword());
 		String joinedString = credential.getEmail().concat(":").concat(credential.getPassword());
 		String encodedString = Base64.getEncoder().encodeToString(joinedString.getBytes());
 //		System.out.println(encodedString);
 //		byte[] bytes = Base64.getDecoder().decode(encodedString);
 //		String decodedString  = new String(bytes); 
 // 		System.out.println("Decoded: "+ decodedString );
-		return Response.status(Response.Status.OK)
-				.entity(encodedString)
-				.build();
+		if(user != null ) {
+			System.out.println(user);
+			return Response.status(Response.Status.OK)
+					.entity(encodedString)
+					.build();
+		} else {
+			return Response.status(Response.Status.UNAUTHORIZED).entity("User unauthorized").build();
+		}
+		
 	}
 	
 	@GET

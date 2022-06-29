@@ -37,4 +37,8 @@ public class UserService {
 		return userRepo.authenticate(email, password);
 	}
 	
+	public void closeConn() {
+		userRepo.close();
+	}
+	
 }
