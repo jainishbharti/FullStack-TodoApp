@@ -39,10 +39,12 @@ code {
 
 .nav-link {
   font-size: 1rem;
-  font-variant: normal;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
   font-weight: 550;
   margin: 0 5px;
-  color: rgb(35, 36, 37);
+  color: rgb(0, 0, 0);
 }
 
 .logo-link {

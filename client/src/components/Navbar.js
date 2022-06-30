@@ -3,6 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import AddTaskIcon from "@mui/icons-material/AddTask";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
@@ -16,9 +17,8 @@ const Navbar = () => {
     dispatch({ type: LOGOUT });
   };
 
-
   const { isLoggedIn } = state;
-  
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -35,27 +35,30 @@ const Navbar = () => {
             }}
           >
             <NavLink to="/" className="logo-link">
-              Add Todos Here
+              <AddTaskIcon fontSize="large" />
             </NavLink>
           </Typography>
 
           {!isLoggedIn ? (
             <>
-              <Button color="inherit">
-                <NavLink to="/login" className="nav-link">
-                  Signin
-                </NavLink>
-              </Button>
-              <Button color="inherit">
-                <NavLink to="/register" className="nav-link">
-                  SignUp
-                </NavLink>
-              </Button>
+              <NavLink to="/login" className="nav-link">
+                <Button color="success" variant="contained">
+                  Sign in
+                </Button>
+              </NavLink>
+
+              <NavLink to="/register" className="nav-link">
+                <Button color="action" variant="contained">
+                  Sign Up
+                </Button>
+              </NavLink>
             </>
           ) : (
             <>
-              <Button color="secondary" >
-               <span className="nav-link">Hello, {state.name.split(" ")[0]}</span>
+              <Button color="secondary">
+                <span className="nav-link">
+                  Hello, {state.name.split(" ")[0]}
+                </span>
               </Button>
               <Button
                 color="inherit"

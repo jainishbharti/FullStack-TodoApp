@@ -27,19 +27,26 @@ const HomePage = () => {
 
   useEffect(() => {
     const checkIfLoggedIn = async () => {
-      const { status, data } = await axios.get("/auth/checkLogin", {
-        'headers': {
-          'Authorization': `Basic ${localStorage.getItem("user")}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (status === 202) {
-        setUser(data);
-        fetchTodos(data);
-        dispatch({ type: IS_LOGGED, payload: data });
-      } else if (status === 401) {
-        console.log("User unauthorized!");
+      const token = localStorage.getItem("user");
+      if(token){
+        const { status, data } = await axios.get("/auth/checkLogin", {
+          'headers': {
+            'Authorization': `Basic ${localStorage.getItem("user")}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (status === 202) {
+          setUser(data);
+          fetchTodos(data);
+          dispatch({ type: IS_LOGGED, payload: data });
+        } else if (status === 401) {
+          console.log("User unauthorized!");
+        }
+      } else{
+        console.log('User unauthorized!');  
       }
+      
+      
     };
     checkIfLoggedIn();
   }, []);
