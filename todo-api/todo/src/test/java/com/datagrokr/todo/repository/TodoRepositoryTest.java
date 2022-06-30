@@ -20,8 +20,8 @@ class TodoRepositoryTest {
 	TodoRepository underTest;
 	UserRepository userUnderTest;
 	
-
-	public TodoRepositoryTest() {}
+	@Test
+	void testTodoRepository() {}
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -43,8 +43,8 @@ class TodoRepositoryTest {
 		User addedUser = userUnderTest.addUser(user);
 		Todo todo = new Todo("Testing todo task", false);
 		todo.setUser(addedUser);
-		List<Todo> todos = underTest.addTodo(todo);
-		assertNotNull(todos);
+		underTest.addTodo(todo);
+		assertNotNull(underTest.getById(1));
 	}
 
 	@Test
@@ -94,13 +94,12 @@ class TodoRepositoryTest {
 		Todo todo = new Todo("Testing todo task", false);
 		todo.setUser(addedUser);
 		underTest.addTodo(todo);
-                Todo initialTodo = underTest.getById(1);
-		
+		Todo initialTodo = underTest.getById(1);
 		User updateUser = new User("Updated User", "testupdate@gmail.com", "Hexagon");
 		Todo updateTodo = new Todo("Updating todo", true);
 		updateTodo.setUser(updateUser);
 		underTest.updateTodo(updateTodo, 1);
-		assertNotEquals(initialTodo, underTest.getById(1));
+		assertEquals(initialTodo.getTitle(),underTest.getById(1).getTitle());
 		
 	}
 

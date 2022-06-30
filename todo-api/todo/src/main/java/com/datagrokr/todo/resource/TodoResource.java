@@ -75,6 +75,7 @@ public class TodoResource {
 	
 	@Path("/{id}")
 	@DELETE
+	@Secured
 	public Response delete(@PathParam("id") Integer id) {
 		todoService.deleteById(id);
 		return Response.status(Response.Status.OK).entity(todoService.deleteById(id)).build();
