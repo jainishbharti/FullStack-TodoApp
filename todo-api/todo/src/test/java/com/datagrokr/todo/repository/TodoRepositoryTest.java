@@ -1,6 +1,5 @@
 package com.datagrokr.todo.repository;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
@@ -21,11 +20,11 @@ class TodoRepositoryTest {
 	TodoRepository underTest;
 	UserRepository userUnderTest;
 	
-	@Test
-	void testTodoRepository() {}
+
+	public TodoRepositoryTest() {}
 
 	@BeforeEach
-	void setUpBeforeClass() throws Exception {
+	void setUp() throws Exception {
 		underTest = new TodoRepository();
 		userUnderTest = new UserRepository();
 	}
@@ -44,8 +43,8 @@ class TodoRepositoryTest {
 		User addedUser = userUnderTest.addUser(user);
 		Todo todo = new Todo("Testing todo task", false);
 		todo.setUser(addedUser);
-		Todo addedTodo = underTest.addTodo(todo);
-		assertEquals(todo, addedTodo);
+		List<Todo> todos = underTest.addTodo(todo);
+		assertNotNull(todos);
 	}
 
 	@Test
@@ -83,8 +82,8 @@ class TodoRepositoryTest {
 		User addedUser = userUnderTest.addUser(user);
 		Todo todo = new Todo("Testing todo task", false);
 		todo.setUser(addedUser);
-		Todo addedTodo = underTest.addTodo(todo);
-		Todo foundTodo = underTest.getById(addedTodo.getTodoId());
+		underTest.addTodo(todo);
+		Todo foundTodo = underTest.getById(1);
 		assertNotNull(foundTodo);
 	}
 
@@ -94,13 +93,14 @@ class TodoRepositoryTest {
 		User addedUser = userUnderTest.addUser(user);
 		Todo todo = new Todo("Testing todo task", false);
 		todo.setUser(addedUser);
-		Todo addedTodo = underTest.addTodo(todo);
+		underTest.addTodo(todo);
+                Todo initialTodo = underTest.getById(1);
 		
 		User updateUser = new User("Updated User", "testupdate@gmail.com", "Hexagon");
 		Todo updateTodo = new Todo("Updating todo", true);
 		updateTodo.setUser(updateUser);
-		Todo updatedTodo = underTest.updateTodo(updateTodo, addedTodo.getTodoId());
-		assertEquals(updateTodo.getTitle(), updatedTodo.getTitle());
+		underTest.updateTodo(updateTodo, 1);
+		assertNotEquals(initialTodo, underTest.getById(1));
 		
 	}
 
@@ -111,8 +111,8 @@ class TodoRepositoryTest {
 		User addedUser = userUnderTest.addUser(user);
 		Todo todo = new Todo("Testing todo task", false);
 		todo.setUser(addedUser);
-		Todo addedTodo = underTest.addTodo(todo);
-		underTest.deleteById(addedTodo.getTodoId());
+		underTest.addTodo(todo);
+		underTest.deleteById(1);
 		assertNull(underTest.getById(1));
 	}
 
