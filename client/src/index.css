@@ -30,11 +30,18 @@ code {
   height: fit-content;
 }
 
+.form-button{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .nav-link {
   font-size: 1rem;
+  font-variant: normal;
   font-weight: 550;
   margin: 0 5px;
-  text-decoration: none;
   color: rgb(35, 36, 37);
 }
 
@@ -55,10 +62,12 @@ code {
 }
 
 .err-msg {
+  text-align: start;
   color: red;
   width: 300px;
   font-weight: 550;
-  margin-bottom: 1rem;
+  margin-top: -10px;
+  margin-bottom: 1em;
 }
 
 .success-msg{
@@ -69,7 +78,7 @@ code {
 }
 
 .registration-link {
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50; 
   border: none;
   color: rgb(8, 8, 8);
   padding: 15px 32px;

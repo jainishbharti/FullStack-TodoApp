@@ -13,7 +13,7 @@ import {
   DONE_TODO,
   DELETE_TODO,
   UPDATE_TODO,
-  GET_TODOS
+  GET_TODOS,
 } from "../context/constants/ActionConstants";
 import axios from "axios";
 
@@ -30,17 +30,15 @@ const TodoCard = ({ todoId, title, done, dispatch }) => {
     const todoId = e.target.todoId.value;
     const updatedTodo = { done: !done };
 
-    const { data, status } = await axios.put(`/todos/${todoId}`,updatedTodo, {
-      'headers': {
+    const { data, status } = await axios.put(`/todos/${todoId}`, updatedTodo, {
+      headers: {
         "Content-Type": "application/json",
-        'Authorization': `Basic ${localStorage.getItem("user")}`,
+        Authorization: `Basic ${localStorage.getItem("user")}`,
       },
     });
     if (status === 200) {
-      console.log(data);
       dispatch({ type: DONE_TODO, payload: data });
       dispatch({ type: GET_TODOS, payload: data });
-
     }
   };
 
@@ -68,7 +66,6 @@ const TodoCard = ({ todoId, title, done, dispatch }) => {
     });
 
     if (status === 200) {
-      
       setEditing(false);
       dispatch({ type: UPDATE_TODO, payload: data });
       dispatch({ type: GET_TODOS, payload: data });
@@ -79,7 +76,7 @@ const TodoCard = ({ todoId, title, done, dispatch }) => {
     <Card sx={{ minWidth: 275, marginBottom: "0.5rem" }}>
       <CardContent className="card-content">
         <Typography
-          sx={{ fontSize: 20, marginTop: "0.7rem" }}
+          sx={{ fontSize: 18, marginTop: "0.7rem" }}
           style={{ textDecoration: done ? "line-through" : "none" }}
           color="text.secondary"
           component={"span"}
@@ -105,12 +102,18 @@ const TodoCard = ({ todoId, title, done, dispatch }) => {
           <form onSubmit={(e) => handleUpdate(e)}>
             <input type="hidden" value={todoId} name="todoId" />
             <input type="hidden" value="" name="editTitle" />
-            <Button type="submit" size="small" disabled={!editing}>
-              <SaveIcon type="submit" />
-            </Button>
-            <Button type="button" size="small">
-              <EditIcon onClick={() => setEditing(true)} />
-            </Button>
+            <div className="form-button">
+            <div>
+              <Button type="submit" size="small" disabled={!editing}>
+                <SaveIcon type="submit" />
+              </Button>
+            </div>
+            <div>
+              <Button type="button" size="small">
+                <EditIcon onClick={() => setEditing(true)} />
+              </Button>
+            </div>
+            </div>
           </form>
 
           <form onSubmit={(e) => handleDelete(e)}>

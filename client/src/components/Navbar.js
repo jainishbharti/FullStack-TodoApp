@@ -43,12 +43,12 @@ const Navbar = () => {
             <>
               <Button color="inherit">
                 <NavLink to="/login" className="nav-link">
-                  Login
+                  Signin
                 </NavLink>
               </Button>
               <Button color="inherit">
                 <NavLink to="/register" className="nav-link">
-                  SIGN UP
+                  SignUp
                 </NavLink>
               </Button>
             </>
@@ -62,7 +62,7 @@ const Navbar = () => {
                 onClick={() => handleLogout()}
                 className="nav-link"
               >
-                <span className="nav-link">LOGOUT</span>
+                <span className="nav-link">Log out</span>
               </Button>
             </>
           )}
