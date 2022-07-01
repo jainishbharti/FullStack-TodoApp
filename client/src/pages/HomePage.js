@@ -12,7 +12,11 @@ import {
 import axios from "axios";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
+import AddTaskIcon from "@mui/icons-material/AddTask";
+import IconButton from "@mui/material/IconButton";
+import { DemoTodo, Item } from "../components/DemoTodo";
+import { Divider, Grid, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 
 const HomePage = () => {
   const { state, dispatch } = useContext(UserContext);
@@ -28,10 +32,10 @@ const HomePage = () => {
   useEffect(() => {
     const checkIfLoggedIn = async () => {
       const token = localStorage.getItem("user");
-      if(token){
+      if (token) {
         const { status, data } = await axios.get("/auth/checkLogin", {
-          'headers': {
-            'Authorization': `Basic ${localStorage.getItem("user")}`,
+          headers: {
+            Authorization: `Basic ${localStorage.getItem("user")}`,
             "Content-Type": "application/json",
           },
         });
@@ -42,11 +46,9 @@ const HomePage = () => {
         } else if (status === 401) {
           console.log("User unauthorized!");
         }
-      } else{
-        console.log('User unauthorized!');  
+      } else {
+        console.log("User unauthorized!");
       }
-      
-      
     };
     checkIfLoggedIn();
   }, []);
@@ -61,7 +63,7 @@ const HomePage = () => {
     const { data } = await axios.post("/todos/", todo, {
       headers: {
         "Content-Type": "application/json",
-        'Authorization': `Basic ${localStorage.getItem("user")}`,
+        Authorization: `Basic ${localStorage.getItem("user")}`,
       },
     });
     dispatch({ type: ADD_TODO, payload: data });
@@ -73,38 +75,70 @@ const HomePage = () => {
     <div>
       {state.isLoggedIn ? (
         <div>
-          <h1 className="heading">Welcome, {user ? user.name : "User"}</h1>
           <Container maxWidth="sm">
-            <form onSubmit={(e) => handleAdd(e)} className="card-content">
-              <Checkbox
-                sx={{
-                  color: "black",
-                  marginBottom: "1rem",
-                  width: "20px",
-                  marginRight: "1em",
-                }}
-                name="done"
-              />
-              <TextField
-                variant="outlined"
-                sx={{
-                  color: "black",
-                  marginBottom: "1rem",
-                  width: "100%",
-                  marginRight: "1rem",
-                }}
-                name="title"
-              />
-
-              <Button
-                type="submit"
-                color="success"
-                variant="contained"
-                className="add-btn"
+            <Box
+              p={2}
+              mb={0.5}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <IconButton>
+                <AddTaskIcon fontSize="large" color="warning" sx={{ mr: 2 }} />
+                <Typography
+                  fontSize="large"
+                  color="warning"
+                  sx={{ mr: 2, fontWeight: 550 }}
+                >
+                  <span>Todo List</span>
+                </Typography>
+              </IconButton>
+              <Typography
+                component="h5"
+                sx={{fontStyle: "italic" }}
               >
-                <AddIcon />
-              </Button>
-            </form>
+                <span>Helps you keep precise and organized !</span>
+              </Typography>
+            </Box>
+            
+
+            <Box sx={{ marginTop: "5rem" }}>
+              <form onSubmit={(e) => handleAdd(e)} className="card-content">
+                <Checkbox
+                  sx={{
+                    color: "black",
+                    marginBottom: "1rem",
+                    width: "20px",
+                    marginRight: "1em",
+                  }}
+                  name="done"
+                />
+                <TextField
+                  color="primary"
+                  variant="outlined"
+                  sx={{
+                    color: "black",
+                    marginBottom: "1rem",
+                    width: "100%",
+                    marginRight: "1rem",
+                  }}
+                  placeholder="What's on your mind today?"
+                  name="title"
+                />
+
+                <Button
+                  type="submit"
+                  color="success"
+                  variant="contained"
+                  className="add-btn"
+                >
+                  <AddIcon />
+                </Button>
+              </form>
+            </Box>
 
             {state.todos &&
               state.todos.map((todo) => (
@@ -120,14 +154,8 @@ const HomePage = () => {
         </div>
       ) : (
         <div>
-          <h1 className="heading">Welcome, User</h1>
           <Container>
-            <h1 className="heading">
-              Create Todo's List for Yourself !! Just By{" "}
-              <Link role="loginPageLink" to="/login" className="link">
-                Logging In
-              </Link>
-            </h1>
+            <DemoTodo />
           </Container>
         </div>
       )}
