@@ -3,8 +3,8 @@ package com.datagrokr.todo.resource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -34,6 +34,11 @@ class UserResourceTest extends JerseyTest{
 	@BeforeEach
 	public void init() throws Exception {
 		userService = new UserService();
+	}
+	
+	@AfterEach
+	public void tearDown() {
+		userService.closeConn();
 	}
 
 	@Test
@@ -76,7 +81,6 @@ class UserResourceTest extends JerseyTest{
 	}
 
 	@Test
-	@Disabled
 	void testUpdateById() throws Exception {
 		User user = new User("TestUser", "test@gmail.com", "Testagon");
 		User addedUser = userService.save(user);

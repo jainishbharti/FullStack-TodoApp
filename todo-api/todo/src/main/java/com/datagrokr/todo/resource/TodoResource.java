@@ -2,6 +2,8 @@ package com.datagrokr.todo.resource;
 
 
 
+import java.util.List;
+
 import com.datagrokr.todo.annotation.Secured;
 import com.datagrokr.todo.entity.Todo;
 import com.datagrokr.todo.entity.User;
@@ -61,9 +63,14 @@ public class TodoResource {
 	@POST
 	@Secured
     public Response postIt(@HeaderParam("Authorization") String auth, Todo todo) {
+		System.out.println("Initial line");
 		String token = auth.substring(6);
+		System.out.println("After slicing token");
 		User user = tokenUtilService.getUserFromToken(token);
-    	return Response.status(Response.Status.CREATED).entity(todoService.save(todo, user)).build();
+		System.out.println("After finding user from token: "+  user);
+		List<Todo> todos = todoService.save(todo, user);
+		System.out.println("In post todo");
+    	return Response.status(Response.Status.CREATED).entity(todos).build();
     }
 	
 	@Path("/{id}")
@@ -78,6 +85,6 @@ public class TodoResource {
 	@Secured
 	public Response delete(@PathParam("id") Integer id) {
 		todoService.deleteById(id);
-		return Response.status(Response.Status.OK).entity(todoService.deleteById(id)).build();
+		return Response.status(Response.Status.NO_CONTENT).entity(todoService.deleteById(id)).build();
 	}
 }

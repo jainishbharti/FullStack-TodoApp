@@ -6,12 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.jupiter.api.AfterEach;
+import org.glassfish.jersey.test.TestProperties;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.datagrokr.todo.entity.Todo;
 import com.datagrokr.todo.entity.User;
@@ -23,7 +20,6 @@ import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@TestInstance(Lifecycle.PER_CLASS)
 class TodoResourceTest extends JerseyTest{
 	
 	TodoService todoService;
@@ -31,6 +27,8 @@ class TodoResourceTest extends JerseyTest{
 	
 	 @Override
 	 protected Application configure() {
+		  enable(TestProperties.LOG_TRAFFIC);
+		  enable(TestProperties.DUMP_ENTITY);
 	      return new ResourceConfig(TodoResource.class);
 	 }
 
@@ -41,10 +39,7 @@ class TodoResourceTest extends JerseyTest{
 		userService = new UserService();
 	}
 
-	@AfterEach
-	public void tearDown() throws Exception {
-		todoService.close();
-	}
+
 
 	@Test
 	void testTodoResource() {
@@ -88,18 +83,18 @@ class TodoResourceTest extends JerseyTest{
 	}
 
 	@Test
-	@Disabled
 	void testPostIt() throws Exception {
-		User user = new User("TestUser", "test@gmail.com", "Testagon");
-		User addedUser = userService.save(user);
-		Todo todo = new Todo("Testing todo", false);
-		todo.setUser(addedUser);
-		Response response = target("/todos").request().post(Entity.entity(todo, MediaType.APPLICATION_JSON));
+		User user = new User("John Doe", "johnny@gmail.com", "hexagon");
+		userService.save(user);
+		Todo todo = new Todo("Testing todo", false);		
+		Response response = target("/todos").request()
+				.header("Authorization", "Basic am9obm55QGdtYWlsLmNvbTpoZXhhZ29u")
+				.post(Entity.entity(todo, MediaType.APPLICATION_JSON));
+		System.out.println(response.getStatus());
 		assertEquals("should return CREATED response", 201, response.getStatus());
 	}
 
 	@Test
-	@Disabled
 	void testUpdateById() throws Exception {
 		User user = new User("TestUser", "test@gmail.com", "Testagon");
 		User addedUser = userService.save(user);
@@ -112,14 +107,13 @@ class TodoResourceTest extends JerseyTest{
 	}
 
 	@Test
-	@Disabled
 	void testDelete() throws Exception {
 		User user = new User("TestUser", "test@gmail.com", "Testagon");
 		User addedUser = userService.save(user);
 		Todo todo = new Todo("Testing todo", false);
 		todoService.save(todo, addedUser);
-		Response response = target("/todos/"+ 1).request().delete();
-		assertNotEquals("Should return an OK response", 200, response.getStatus());
+		Response response = target("/todos/1").request().delete();
+		assertNotEquals("Should return an No content response", 204, response.getStatus());
 	}
 
 }

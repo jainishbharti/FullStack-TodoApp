@@ -30,10 +30,7 @@ public class AuthResource {
 		User user = userService.isUserAuthenticated(credential.getEmail(), credential.getPassword());
 		String joinedString = credential.getEmail().concat(":").concat(credential.getPassword());
 		String encodedString = Base64.getEncoder().encodeToString(joinedString.getBytes());
-//		System.out.println(encodedString);
-//		byte[] bytes = Base64.getDecoder().decode(encodedString);
-//		String decodedString  = new String(bytes); 
-// 		System.out.println("Decoded: "+ decodedString );
+
 		if(user != null ) {
 			System.out.println(user);
 			return Response.status(Response.Status.OK)

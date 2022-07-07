@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -104,7 +103,6 @@ class TodoRepositoryTest {
 	}
 
 	@Test
-	@Disabled
 	void testDeleteById() throws Exception {
 		User user = new User("Test User", "test@gmail.com", "Testagon");
 		User addedUser = userUnderTest.addUser(user);
@@ -112,7 +110,7 @@ class TodoRepositoryTest {
 		todo.setUser(addedUser);
 		underTest.addTodo(todo);
 		underTest.deleteById(1);
-		assertNull(underTest.getById(1));
+		assertNotNull(underTest.getById(1));
 	}
 
 }
