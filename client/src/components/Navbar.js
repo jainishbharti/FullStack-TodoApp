@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -21,9 +21,32 @@ import { LOGOUT } from "../context/constants/ActionConstants";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Typography } from "@mui/material";
 
+
+
+function getWindowSize() {
+  const {innerWidth, innerHeight} = window;
+  return {innerWidth, innerHeight};
+}
+
 const Navbar = () => {
+  
+  const [windowSize, setWindowSize] = useState(getWindowSize());
   const { state, dispatch } = useContext(UserContext);
   const [drawer, setDrawer] = useState(false);
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+   
+  }, [])
+  
 
   const handleDrawerOpen = () => {
     setDrawer(true);
@@ -35,7 +58,7 @@ const Navbar = () => {
   const loggedInMenuItems = [
     { id: 1, title: "About", href: "#" },
     { id: 2, title: "Profile", href: "/" },
-    { id: 3, title: "Todos", href: "/" }
+    { id: 3, title: "Todos", href: "/" },
   ];
   const guestMenuItems = [
     { id: 1, title: "About", href: "#" },
@@ -70,24 +93,30 @@ const Navbar = () => {
         {isLoggedIn
           ? loggedInMenuItems.map(({ title, href, id }) => (
               <ListItem key={id} disablePadding>
-                <Link to={href} style={{textDecoration: "none" , color: "#424242"}}>
+                <Link
+                  to={href}
+                  style={{ textDecoration: "none", color: "#424242" }}
+                >
                   <ListItemButton>
                     <ListItemIcon>
                       {id % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                     </ListItemIcon>
-                      <ListItemText primary={title} />
+                    <ListItemText primary={title} />
                   </ListItemButton>
                 </Link>
               </ListItem>
             ))
           : guestMenuItems.map(({ title, href, id }) => (
               <ListItem key={id} disablePadding>
-                <Link to={href} style={{textDecoration: "none", color: "#424242"}}>
+                <Link
+                  to={href}
+                  style={{ textDecoration: "none", color: "#424242" }}
+                >
                   <ListItemButton>
                     <ListItemIcon>
                       {id % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                     </ListItemIcon>
-                      <ListItemText primary={title}/>
+                    <ListItemText primary={title} />
                   </ListItemButton>
                 </Link>
               </ListItem>
@@ -109,15 +138,17 @@ const Navbar = () => {
         <AppBar position="static">
           <Toolbar className="flex">
             <div>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                onClick={handleDrawerOpen}
-              >
-                <MenuIcon />
-              </IconButton>
+              {windowSize.innerWidth <= 500 ? (
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={handleDrawerOpen}
+                >
+                  <MenuIcon />
+                </IconButton>
+              ) : null}
               <NavLink to="/" className="logo-link">
                 <IconButton color="inherit">
                   <AddTaskIcon fontSize="large" sx={{ mr: 2 }} />
@@ -126,31 +157,39 @@ const Navbar = () => {
             </div>
 
             {!isLoggedIn ? (
-              <div>
-                <NavLink to="/login" className="nav-link">
-                  <Button color="success" variant="contained">
-                    <span className="nav-action">Sign in</span>
-                  </Button>
-                </NavLink>
+              windowSize.innerWidth >= 500 ? (
+                <div>
+                  <NavLink to="/login" className="nav-link">
+                    <Button color="success" variant="contained">
+                      <span className="nav-action">Sign in</span>
+                    </Button>
+                  </NavLink>
 
-                <NavLink to="/register" className="nav-link">
-                  <Button color="warning" variant="contained">
-                    <span className="nav-action">Sign Up</span>
-                  </Button>
-                </NavLink>
-              </div>
+                  <NavLink to="/register" className="nav-link">
+                    <Button color="warning" variant="contained">
+                      <span className="nav-action">Sign Up</span>
+                    </Button>
+                  </NavLink>
+                </div>
+              ) : null
             ) : (
               <>
                 <Button color="inherit">
-                  <Typography color="inherit" sx={{ fontWeight: 550 }} component="span">
+                  <Typography
+                    color="inherit"
+                    sx={{ fontWeight: 550 }}
+                    component="span"
+                  >
                     Hello, {state.name.split(" ")[0]}
                   </Typography>
                 </Button>
                 <Button color="inherit" onClick={() => handleLogout()}>
-                  <Typography color="inherit" sx={{ fontWeight: 550 }} component="span">
-                    
-                      <LogoutIcon size="large" />
-                    
+                  <Typography
+                    color="inherit"
+                    sx={{ fontWeight: 550 }}
+                    component="span"
+                  >
+                    <LogoutIcon size="large" />
                   </Typography>
                 </Button>
               </>
