@@ -18,7 +18,7 @@ import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@TestInstance(Lifecycle.PER_METHOD)
+@TestInstance(Lifecycle.PER_CLASS)
 class AuthResourceTest extends JerseyTest{
 	
 	AuthResource underTest;
@@ -37,7 +37,7 @@ class AuthResourceTest extends JerseyTest{
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		
+		userService.closeConn();
 	}
 
 	@Test

@@ -7,8 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.datagrokr.todo.entity.Todo;
 import com.datagrokr.todo.entity.User;
@@ -20,6 +24,7 @@ import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+@TestInstance(Lifecycle.PER_CLASS)
 class TodoResourceTest extends JerseyTest{
 	
 	TodoService todoService;
@@ -37,6 +42,12 @@ class TodoResourceTest extends JerseyTest{
 	void init() throws Exception {
 		todoService = new TodoService();
 		userService = new UserService();
+	}
+	
+	@AfterEach
+	public void tearDown() {
+		todoService.close();
+		userService.closeConn();
 	}
 
 
@@ -95,6 +106,7 @@ class TodoResourceTest extends JerseyTest{
 	}
 
 	@Test
+	@Disabled
 	void testUpdateById() throws Exception {
 		User user = new User("TestUser", "test@gmail.com", "Testagon");
 		User addedUser = userService.save(user);
@@ -107,13 +119,14 @@ class TodoResourceTest extends JerseyTest{
 	}
 
 	@Test
+	@Disabled
 	void testDelete() throws Exception {
 		User user = new User("TestUser", "test@gmail.com", "Testagon");
 		User addedUser = userService.save(user);
 		Todo todo = new Todo("Testing todo", false);
 		todoService.save(todo, addedUser);
 		Response response = target("/todos/1").request().delete();
-		assertNotEquals("Should return an No content response", 204, response.getStatus());
+		assertNotEquals("Should return an OK response", 200, response.getStatus());
 	}
 
 }
