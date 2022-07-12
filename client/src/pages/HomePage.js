@@ -14,8 +14,8 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import IconButton from "@mui/material/IconButton";
-import { DemoTodo, Item } from "../components/DemoTodo";
-import { Divider, Grid, Typography } from "@mui/material";
+import { DemoTodo } from "../components/DemoTodo";
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 const HomePage = () => {
@@ -44,10 +44,10 @@ const HomePage = () => {
           fetchTodos(data);
           dispatch({ type: IS_LOGGED, payload: data });
         } else if (status === 401) {
-          console.log("User unauthorized!");
+          // console.log("User unauthorized!");
         }
       } else {
-        console.log("User unauthorized!");
+        // console.log("User unauthorized!");
       }
     };
     checkIfLoggedIn();
@@ -108,6 +108,7 @@ const HomePage = () => {
             <Box sx={{ marginTop: "5rem" }}>
               <form onSubmit={(e) => handleAdd(e)} className="card-content">
                 <Checkbox
+                  data-testid="checkbox"
                   sx={{
                     color: "black",
                     marginBottom: "1rem",
@@ -130,6 +131,7 @@ const HomePage = () => {
                 />
 
                 <Button
+                  role="addtodobutton"
                   type="submit"
                   color="success"
                   variant="contained"
@@ -153,7 +155,7 @@ const HomePage = () => {
           </Container>
         </div>
       ) : (
-        <div>
+        <div data-testid="demotodo">
           <Container>
             <DemoTodo />
           </Container>

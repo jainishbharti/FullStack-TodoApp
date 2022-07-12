@@ -21,15 +21,12 @@ import { LOGOUT } from "../context/constants/ActionConstants";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Typography } from "@mui/material";
 
-
-
 function getWindowSize() {
-  const {innerWidth, innerHeight} = window;
-  return {innerWidth, innerHeight};
+  const { innerWidth, innerHeight } = window;
+  return { innerWidth, innerHeight };
 }
 
 const Navbar = () => {
-  
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const { state, dispatch } = useContext(UserContext);
   const [drawer, setDrawer] = useState(false);
@@ -39,14 +36,12 @@ const Navbar = () => {
       setWindowSize(getWindowSize());
     }
 
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
     };
-   
-  }, [])
-  
+  }, []);
 
   const handleDrawerOpen = () => {
     setDrawer(true);
@@ -139,15 +134,17 @@ const Navbar = () => {
           <Toolbar className="flex">
             <div>
               {windowSize.innerWidth <= 500 ? (
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  onClick={handleDrawerOpen}
-                >
-                  <MenuIcon />
-                </IconButton>
+                <div data-testid="hamburger">
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    onClick={handleDrawerOpen}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </div>
               ) : null}
               <NavLink to="/" className="logo-link">
                 <IconButton color="inherit">
@@ -161,13 +158,13 @@ const Navbar = () => {
                 <div>
                   <NavLink to="/login" className="nav-link">
                     <Button color="success" variant="contained">
-                      <span className="nav-action">Sign in</span>
+                      <span className="nav-action">Login</span>
                     </Button>
                   </NavLink>
 
                   <NavLink to="/register" className="nav-link">
                     <Button color="warning" variant="contained">
-                      <span className="nav-action">Sign Up</span>
+                      <span className="nav-action">SignUp</span>
                     </Button>
                   </NavLink>
                 </div>
@@ -183,7 +180,11 @@ const Navbar = () => {
                     Hello, {state.name.split(" ")[0]}
                   </Typography>
                 </Button>
-                <Button color="inherit" onClick={() => handleLogout()}>
+                <Button
+                  role="logoutButton"
+                  color="inherit"
+                  onClick={() => handleLogout()}
+                >
                   <Typography
                     color="inherit"
                     sx={{ fontWeight: 550 }}

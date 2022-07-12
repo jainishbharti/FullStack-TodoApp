@@ -24,7 +24,7 @@ export const DemoTodo = () => {
               <Typography variant="h2" align="left">
                 What's on your mind? TODAY
               </Typography>
-              <TodoStepper />
+              <div data-testid="todostepper"><TodoStepper /></div>
             </Box>
           </Item>
         </Grid>
@@ -34,7 +34,7 @@ export const DemoTodo = () => {
               <Typography sx={{ margin: "1.5rem" }} component="h3">
                 Timeline Example
               </Typography>
-              <TodoTimeline />
+              <div data-testid="timeline"><TodoTimeline /></div>
             </Box>
           </Item>
         </Grid>

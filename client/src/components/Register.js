@@ -51,11 +51,11 @@ const Register = () => {
             if (result.status === 201) {
               setMessage("User created successfully!");
               setError("");
-              const user = await result.data;
-              if (user) console.log("User created successfully!");
+              // const user = await result.data;
+              // if (user) console.log("User created successfully!");
             }
           } catch (err) {
-            console.log(err);
+            // console.log(err);
             setError("Email already exists");
           }
 

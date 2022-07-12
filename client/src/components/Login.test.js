@@ -8,7 +8,7 @@ import axios from "axios";
 jest.mock("axios");
 
 const contextValue = {
-  state: { firstName: "", isLoggedIn: false, todos: [] },
+  state: { name: "", isLoggedIn: false, todos: [] },
   dispatch: jest.fn(),
 };
 
@@ -17,23 +17,31 @@ describe("login", () => {
     renderComponentWithContext(contextValue, <Login />);
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
-    expect(screen.getByText("Submit")).toBeInTheDocument();
+    expect(screen.getByRole("loginButton")).toBeInTheDocument();
   });
 
   describe("login function", () => {
-    const username = "test@example.com";
-    const password = "whatever123";
+    const email = "johnny@email.com";
+    const password = "hexagon";
 
     describe("with success", () => {
-      const data = { firstName: "Test" };
+      const data = {
+        // status: 200,
+        name: "John",
+        // token : "Basic am9obm55QGdtYWlsLmNvbTpoZXhhZ29u"
+      };
 
       it("should return response data", async () => {
-        axios.post.mockImplementationOnce(() => Promise.resolve(data));
+        axios.post.mockImplementationOnce(() => {
+          // localStorage.setItem("test-user", data.token);
+          return Promise.resolve(data);
+        });
         const response = await axios.post("http://localhost:8080/api/login", {
-          username,
+          email,
           password,
         });
         expect(response).toStrictEqual(data);
+        // expect(localStorage.getItem("test-user")).toBe(response.token);
       });
     });
 
@@ -46,12 +54,12 @@ describe("login", () => {
         renderComponentWithContext(contextValue, <Login />);
 
         const response = axios.post("http://localhost:8080/api/login", {
-          username,
+          email,
           password,
         });
         await expect(response).rejects.toThrow(errorMessage);
         fireEvent.change(screen.getByLabelText("Email"), {
-          target: { value: username },
+          target: { value: email },
         });
         fireEvent.change(screen.getByLabelText("Password"), {
           target: { value: password },

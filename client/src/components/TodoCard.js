@@ -93,7 +93,7 @@ const TodoCard = ({ todoId, title, done, dispatch }) => {
           )}
         </Typography>
         <CardActions>
-          <form onSubmit={(e) => handleDone(e)}>
+          <form data-testid="complete-icon" onSubmit={(e) => handleDone(e)}>
             <input type="hidden" value={todoId} name="todoId" />
             <Button type="submit" size="small">
               {done ? null : <DoneIcon />}
@@ -105,18 +105,18 @@ const TodoCard = ({ todoId, title, done, dispatch }) => {
             <div className="form-button">
             <div>
               <Button type="submit" size="small" disabled={!editing}>
-                <SaveIcon type="submit" />
+                <SaveIcon data-testid="save-icon" type="submit" />
               </Button>
             </div>
             <div>
               <Button type="button" size="small">
-                <EditIcon onClick={() => setEditing(true)} />
+                <EditIcon data-testid="update-icon"  onClick={() => setEditing(true)} />
               </Button>
             </div>
             </div>
           </form>
 
-          <form onSubmit={(e) => handleDelete(e)}>
+          <form data-testid="delete-icon" onSubmit={(e) => handleDelete(e)}>
             <input type="hidden" value={todoId} name="todoId" />
             <Button type="submit" size="small">
               <DeleteIcon />
