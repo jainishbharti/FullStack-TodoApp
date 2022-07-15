@@ -44,13 +44,86 @@ describe("Todo is displayed", () => {
     expect(screen.queryByTestId('Complete tests by EOD')).not.toBeInTheDocument();  
   });
 
-  // test("updating todos", () => {
-  //   const todo = { }
-  //   axios.put.mockResolvedValueOnce({status: 200, data: {
-    
-  //   }})
-  // })
+  test("updating todos", () => {
+    const todo = {status: 200, data: {
+      todoId: 1,
+      title: "Todo title",
+      done: false,
+      user: {
+        userId: 1,
+        name: "John Doe",
+        email: "johnny@gmail.com",
+        password: "something"
+      }
+    }}
+    axios.put.mockResolvedValueOnce(todo);
 
+    const response = await axios.put('http://localhost:8080/todo/api/todos/1');
+
+    expect(response).toEqual(data);
+  })
+
+ 
+
+  test("deleting todos", () => {
+    const todo = {status: 200}
+    axios.delete.mockResolvedValueOnce(todo);
+
+    const response = await axios.delete('http://localhost:8080/todo/api/todos/1');
+
+    expect(response).toEqual(data);  
+
+  })
+
+
+  test("completing todos", () => {
+    const todo = {status: 200, data: {
+      todoId: 1,
+      title: "Todo title",
+      done: true,
+      user: {
+        userId: 1,
+        name: "John Doe",
+        email: "johnny@gmail.com",
+        password: "something"
+      }
+    }}
+    axios.put.mockResolvedValueOnce(todo);
+
+    const response = await axios.put('http://localhost:8080/todo/api/todos/1');
+
+    expect(response).toEqual(data);  
+
+  })
+
+
+  test("fetching todos", () => {
+    const todo = {status: 200, data: {
+      todoId: 1,
+      title: "Todo title",
+      done: true,
+      user: {
+        userId: 1,
+        name: "John Doe",
+        email: "johnny@gmail.com",
+        password: "something"
+      }
+    }}
+    axios.put.mockResolvedValueOnce(todo);
+
+    const response = await axios.get('http://localhost:8080/todo/api/todos');
+
+    expect(response).toEqual(data);  
+
+  })
+
+
+
+ 
 
 
 });
+
+
+  
+

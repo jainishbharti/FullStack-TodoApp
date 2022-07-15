@@ -1,6 +1,5 @@
-import { screen } from "@testing-library/react";
 import renderComponentWithContext from "../testUtils";
-import RegistrationPage from "./LoginPage";
+import RegistrationPage from "./RegistrationPage";
 
 
 describe("testing registration page", () => {
@@ -8,5 +7,6 @@ describe("testing registration page", () => {
 
     test("render registation component", () => {
         renderComponentWithContext(contextValue, <RegistrationPage />);
+
     });
   });
